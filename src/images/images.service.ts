@@ -31,7 +31,12 @@ export class ImagesService {
     const _model = await nsfw.load();
     const image = await this.convert(imagen.buffer);
     const predictions = await _model.classify(image);
+
+    const data = predictions.map((prediction) => ({
+      className: prediction.className,
+      probability: (prediction.probability*100).toFixed(2),
+    }));
     image.dispose();
-    return predictions;
+    return data;
   }
 }
